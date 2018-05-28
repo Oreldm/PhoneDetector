@@ -41,5 +41,12 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
       <artifactId>google-http-client-jackson2</artifactId>
       <version>${google-http-client.version}</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk -->
+	<dependency>
+	    <groupId>com.amazonaws</groupId>
+	    <artifactId>aws-java-sdk</artifactId>
+	    <version>1.11.337</version>
+	</dependency>
+    
   </dependencies>
 </project>

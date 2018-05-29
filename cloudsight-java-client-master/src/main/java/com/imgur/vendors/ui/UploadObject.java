@@ -47,12 +47,6 @@ public class UploadObject {
             metadata.addUserMetadata("x-amz-meta-title", "someTitle");
             request.setMetadata(metadata);
             s3Client.putObject(request);
-            try {
-				Thread.sleep(4000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
             
             try {
                 // get the current ACL

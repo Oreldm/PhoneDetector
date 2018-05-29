@@ -6,30 +6,36 @@ import java.io.IOException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.AccessControlList;
+import com.amazonaws.services.s3.model.EmailAddressGrantee;
+import com.amazonaws.services.s3.model.Grantee;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.Permission;
 
 public class UploadObject {
+	
+//   String clientRegion = Regions.EU_WEST_1.toString(); //Ireland
+	 private String bucketName = "nbaprojectoracle";
+	 private String stringObjKeyName = "test1";
+	 private String fileObjKeyName = "phoneImage.jpg";
+//     private String fileName = "C:\\Users\\h1z1\\Desktop\\images1.jpg";
 
-    public static void main(String[] args) throws IOException {
-        String clientRegion = "Irland";
-        String bucketName = "nbaprojectoracle*";
-        String stringObjKeyName = "*** String object key name ***";
-        String fileObjKeyName = "*** File object key name ***";
-        String fileName = "C:\\Users\\i333343\\Desktop\\images.jpg";
-
+     UploadObject(String fileName) {
         try {
         	AWSCredentials credentials = new BasicAWSCredentials(
-        			  "orel@mip.me", 
-        			  "Turtk0175!"
+        			  "AKIAJTGBEGGLVKGWEMWA", 
+        			  "TGMXgFnsmJakLZXBUj7MCmQq4RtEu7YIiTJScGB2"
         			);
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                    .withRegion(clientRegion)
-                    .withCredentials(new ProfileCredentialsProvider())
+            		.withCredentials(new AWSStaticCredentialsProvider(credentials))
+                    .withRegion(Regions.EU_WEST_1)
                     .build();
             // Upload a text string as a new object.
             s3Client.putObject(bucketName, stringObjKeyName, "Uploaded String Object");
@@ -41,6 +47,25 @@ public class UploadObject {
             metadata.addUserMetadata("x-amz-meta-title", "someTitle");
             request.setMetadata(metadata);
             s3Client.putObject(request);
+            try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+            
+            try {
+                // get the current ACL
+                AccessControlList acl = s3Client.getObjectAcl(bucketName, "Bucks.gif");
+                // set access for the grantee
+//                EmailAddressGrantee grantee = new EmailAddressGrantee(email);
+//                Permission permission = Permission.Read;
+//                acl.grantPermission(grantee, permission);
+                s3Client.setObjectAcl(bucketName, fileObjKeyName, acl);
+            } catch (AmazonServiceException e) {
+                System.err.println(e.getErrorMessage());
+                System.exit(1);
+            }
         }
         catch(AmazonServiceException e) {
             // The call was transmitted successfully, but Amazon S3 couldn't process 
